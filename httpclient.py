@@ -70,23 +70,68 @@ class HTTPClient(object):
     def GET(self, url, args=None):
         #code = 500
         #body = ""
-        #return HTTPResponse(code, body)
+
         url_parsed=urlparse(url)
         host = url_parsed.hostname
         port = url_parsed.port
         path = url_parsed.path
         self.connect(host, port)
+        
+        if path == '':
+            path = '/'
+        else:
+            path = url_parsed.path
+        
+        request = f'GET {path} HTTP/1.1\r\nHost: {host}\r\nAccept: */*\r\nConnection: close\r\n\r\n'
+        self.sendall(request)
+
+        response = self.sendall(self.socket)
+        code = self.get_code(response)
+        print(code)
+        headers = self.get_headers(response)
+        print(headers)
+        body = self.get_body(response)
+        print(body)
+        
+        self.close()
+        return HTTPResponse(code, body)
+
+
 
 
     def POST(self, url, args=None):
         #code = 500
         #body = ""
-        #return HTTPResponse(code, body)
         url_parsed=urlparse(url)
         host = url_parsed.hostname
         port = url_parsed.port
         path = url_parsed.path
         self.connect(host, port)
+
+        if path == '':
+            path = '/'
+        else:
+            path = url_parsed.path
+
+        if args == None:
+            args_encoded = ''
+        else:
+            args_encoded = urlencode(args)
+
+        request = '''POST {path} HTTP/1.1\r\nHost: {host}\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept:
+            */*\r\nContent-Length: {contentlen}\r\nConnection: close\r\n\r\n'''+args_encoded
+        self.sendall(request)
+
+        response = self.sendall(self.socket)
+        code = self.get_code(response)
+        print(code)
+        headers = self.get_headers(response)
+        print(headers)
+        body = self.get_body(response)
+        print(body)
+
+        self.close()
+        return HTTPResponse(code, body)
 
     def command(self, url, command="GET", args=None):
         if (command == "POST"):

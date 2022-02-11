@@ -41,7 +41,7 @@ class HTTPClient(object):
         return None
 
     def get_code(self, data):
-        return int(data.split()[1])
+        return int(self.get_headers(data).split()[1])
 
     def get_headers(self,data):
         return data.split('\r\n\r\n')[0]
@@ -133,10 +133,7 @@ class HTTPClient(object):
             args_encoded = ''
         else:
             args_encoded = urlencode(args)
-        length = len(args_encoded)
-        
-        request = '''POST {path} HTTP/1.1\r\nHost: {host}\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept:
-            */*\r\nContent-Length: {length}\r\nConnection: close\r\n\r\n'''+args_encoded
+        request = "POST {} HTTP/1.1\r\nHost: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}".format(path,host,len(args_encoded),args_encoded)
         
         self.sendall(request)
 

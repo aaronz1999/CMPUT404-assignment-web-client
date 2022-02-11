@@ -12,6 +12,9 @@ Contributors / Licensing
 
 Aaron Zhang
 
+https://docs.python.org/3/library/urllib.parse.html
+http://pymotw.com/2/urlparse/
+
 Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle, 
 https://github.com/tywtyw2002, and https://github.com/treedust
 

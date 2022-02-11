@@ -93,7 +93,7 @@ class HTTPClient(object):
         request = f'GET {path} HTTP/1.1\r\nHost: {host}\r\nAccept: */*\r\nConnection: close\r\n\r\n'
         self.sendall(request)
 
-        response = self.sendall(self.socket)
+        response = self.recvall(self.socket)
         code = self.get_code(response)
         print(code)
         headers = self.get_headers(response)
@@ -138,7 +138,7 @@ class HTTPClient(object):
         
         self.sendall(request)
 
-        response = self.sendall(self.socket)
+        response = self.recvall(self.socket)
         code = self.get_code(response)
         print(code)
         headers = self.get_headers(response)

@@ -133,6 +133,7 @@ class HTTPClient(object):
             args_encoded = ''
         else:
             args_encoded = urlencode(args)
+            
         request = "POST {} HTTP/1.1\r\nHost: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}".format(path,host,len(args_encoded),args_encoded)
         
         self.sendall(request)

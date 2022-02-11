@@ -22,7 +22,7 @@ import sys
 import socket
 import re
 # you may use urllib to encode data appropriately
-import urllib.parse
+from urllib.parse import urlparse, urlencode
 
 def help():
     print("httpclient.py [GET/POST] [URL]\n")
@@ -41,13 +41,13 @@ class HTTPClient(object):
         return None
 
     def get_code(self, data):
-        return None
+        return int(data.split()[1])
 
     def get_headers(self,data):
-        return None
+        return data.split('\r\n\r\n')[0]
 
     def get_body(self, data):
-        return None
+        return data.split('\r\n\r\n')[1]
     
     def sendall(self, data):
         self.socket.sendall(data.encode('utf-8'))
@@ -68,14 +68,25 @@ class HTTPClient(object):
         return buffer.decode('utf-8')
 
     def GET(self, url, args=None):
-        code = 500
-        body = ""
-        return HTTPResponse(code, body)
+        #code = 500
+        #body = ""
+        #return HTTPResponse(code, body)
+        url_parsed=urlparse(url)
+        host = url_parsed.hostname
+        port = url_parsed.port
+        path = url_parsed.path
+        self.connect(host, port)
+
 
     def POST(self, url, args=None):
-        code = 500
-        body = ""
-        return HTTPResponse(code, body)
+        #code = 500
+        #body = ""
+        #return HTTPResponse(code, body)
+        url_parsed=urlparse(url)
+        host = url_parsed.hostname
+        port = url_parsed.port
+        path = url_parsed.path
+        self.connect(host, port)
 
     def command(self, url, command="GET", args=None):
         if (command == "POST"):
